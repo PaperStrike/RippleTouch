@@ -1,23 +1,15 @@
 /**
- * @version 3.1457-20190606
+ * @version 4.1462-20190608
  */
 
 /**
- * Import ripple styles.
+ * Module Information. Necessary for CSS.
  */
-const rippleStyle = document.createElement('style');
-let rippleStyleURL;
-{
-  let currentURL, modulePathLength, modulePath;
+let currentURL, moduleDirLength, moduleDir;
 
-  currentURL = import.meta.url;
-  modulePathLength = currentURL.lastIndexOf('/') + 1;
-  modulePath = currentURL.substr(0, modulePathLength);
-
-  rippleStyleURL = modulePath + 'Ripple.css';
-}
-rippleStyle.innerText = `@import url(${rippleStyleURL})`;
-document.body.appendChild(rippleStyle);
+currentURL = import.meta.url;
+moduleDirLength = currentURL.lastIndexOf('/') + 1;
+moduleDir = currentURL.substr(0, moduleDirLength);
 
 /**
  * Set multiple property in once.
@@ -44,7 +36,7 @@ const classSwitch = function ReplaceTheClassWithOneAnother(ele, [from, to]) {
 
 const Ripple = {
   /**
-   * Reset if you want. Many of them need edit CSS first.
+   * Reset if you want. CSS part needs edit CSS first.
    * @namespace
    * @property {string} markWord
    * @property {number} rippleScale
@@ -52,22 +44,30 @@ const Ripple = {
   settings: {
     markWord: 'Ripple',
     rippleScale: 0.6,
-    /** @enum {string} */
-    animationNames: {
-      running: 'ripple-running',
-      ended: 'ripple-ended',
-    },
-    /** @enum {string} */
-    stylePropertyNames: {
-      center: '--ripple-center',
-      clickPosition: '--ripple-kiss-point',
-      diameter: '--ripple-diameter',
-      scale: '--ripple-scale',
+    /**
+     * @namespace
+     * @property {Element} ele
+     * @property {string} URL
+     */
+    CSS: {
+      ele: document.createElement('style'),
+      URL: moduleDir + 'Ripple.css',
+      /** @enum {string} */
+      animationNames: {
+        running: 'ripple-running',
+        ended: 'ripple-ended',
+      },
+      /** @enum {string} */
+      propertyNames: {
+        center: '--ripple-center',
+        clickPosition: '--ripple-kiss-point',
+        diameter: '--ripple-diameter',
+        scale: '--ripple-scale',
+      },
     },
   },
 
   /**
-   * @namespace
    * @property {boolean} animating
    * @property {boolean} focusing
    * @property {?Element} currentEle
@@ -79,20 +79,18 @@ const Ripple = {
   },
 
   /**
-   * Apply the effect to document.body.
+   * Set up CSS and HTML.
    */
   load() {
+    // Append <style>.
+    const { CSS } = Ripple.settings;
+    CSS.ele.innerText = `@import url(${CSS.URL})`;
+    document.body.appendChild(CSS.ele);
+
+    // Bind Events.
     document.body.addEventListener('mousedown', Ripple.start);
     document.body.addEventListener('mouseup', Ripple.blur);
     document.body.addEventListener('animationend', Ripple.animationEnd);
-  },
-
-  /**
-   * Apply the effect to the specified element.
-   * @param {Element} ele
-   */
-  store(ele) {
-    ele.setAttribute(Ripple.settings.markWord, '');
   },
 
   /**
@@ -116,19 +114,19 @@ const Ripple = {
 
     const { clientWidth: width, clientHeight: height } = target;
 
-    // Most of these parts should be done by using CSS variables.
-    // But at present CSS doesn't support some necessary math functions.
+    // Most of these parts can and should be done in CSS4.
+    // But at present browsers don't support many necessary math functions.
     // Default diameter is 60% of the longer one between the width and height.
     const diameter = Math.max(width, height) * settings.rippleScale;
     const scale = Math.hypot(width, height) / diameter;
   
     // Apply to the element.
-    const { stylePropertyNames, animationNames } = settings;
+    const { propertyNames, animationNames } = settings.CSS;
     setStyleProperties(target, {
-      [stylePropertyNames.center]: `${width / 2}px, ${height / 2}px`,
-      [stylePropertyNames.clickPosition]: `${offsetX}px, ${offsetY}px`,
-      [stylePropertyNames.diameter]: `${diameter}px`,
-      [stylePropertyNames.scale]: scale,
+      [propertyNames.center]: `${width / 2}px, ${height / 2}px`,
+      [propertyNames.clickPosition]: `${offsetX}px, ${offsetY}px`,
+      [propertyNames.diameter]: `${diameter}px`,
+      [propertyNames.scale]: scale,
     });
     classSwitch(target, [animationNames.ended, animationNames.running]);
   },
@@ -161,7 +159,7 @@ const Ripple = {
     if (!state.currentEle) return;
 
     // Return if the animation is not the one we want.
-    const { animationNames } = Ripple.settings;
+    const { animationNames } = Ripple.settings.CSS;
     if (animationName !== animationNames.running) return;
 
     state.animating = false;
@@ -176,11 +174,8 @@ const Ripple = {
   end() {
     const { currentEle } = Ripple.state;
 
-    // Return if nothing is rippling.
-    if (!currentEle) return;
-
     // End CSS animation.
-    const { animationNames } = Ripple.settings;
+    const { animationNames } = Ripple.settings.CSS;
     classSwitch(currentEle, [animationNames.running, animationNames.ended]);
 
     // Restore the state.

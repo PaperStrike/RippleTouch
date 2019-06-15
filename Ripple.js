@@ -1,15 +1,38 @@
 /**
- * @version 4.1462-20190608
+ * Touch with a ripple.
+ * 
+ * @module  RippleTouch/Ripple
+ * @version 6.1471-20190615
+ * @license Apache-2.0
  */
 
-/**
- * Module Information. Necessary for CSS.
- */
-let currentURL, moduleDirLength, moduleDir;
+/** Module Information. Necessary for generating CSS URL. */
+let currentURL, modulePathLength, modulePath;
 
 currentURL = import.meta.url;
-moduleDirLength = currentURL.lastIndexOf('/') + 1;
-moduleDir = currentURL.substr(0, moduleDirLength);
+modulePathLength = currentURL.lastIndexOf('/') + 1;
+modulePath = currentURL.substr(0, modulePathLength);
+
+/**
+ * Overwrite properties in the target by properties in the source.
+ * @param {Object} target - object to be updated.
+ * @param {Object} source - like a patch.
+ */
+const objectDeepAssign = function copyTheValuesToTarget(target, source) {
+  Object.keys(source).forEach((sourcePropName) => {
+    let targetProp, sourceProp;
+    targetProp = target[sourcePropName];
+    sourceProp = source[sourcePropName];
+
+    // TODO: Make condition looks better.
+    if(typeof targetProp + typeof sourceProp === 'object'.repeat(2)) {
+      objectDeepAssign(targetProp, sourceProp);
+    }
+    else {
+      target[sourcePropName] = sourceProp;
+    }
+  });
+};
 
 /**
  * Set multiple property in once.
@@ -29,68 +52,81 @@ const setStyleProperties = function setMultipleProperties(ele, properties) {
  * @param {string} from - the old class.
  * @param {string} to - the new class.
  */
-const classSwitch = function ReplaceTheClassWithOneAnother(ele, [from, to]) {
+const classSwitch = function replaceTheClassWithOneAnother(ele, [from, to]) {
   ele.classList.remove(from);
   ele.classList.add(to);
 };
 
-const Ripple = {
+/**
+ * Can be reset by using Ripple.set. CSS part needs edit CSS first.
+ * @property {string} markWord - HTML attribute to be matched.
+ * @property {number} initialScale - initial size of diameter.
+ * @property {Object} CSS - data of stylesheet.
+ */
+const settings = {
+  markWord: 'Ripple',
+  initialScale: 0.6,
   /**
-   * Reset if you want. CSS part needs edit CSS first.
    * @namespace
-   * @property {string} markWord
-   * @property {number} rippleScale
+   * @property {Element} ele
+   * @property {string} URL
    */
-  settings: {
-    markWord: 'Ripple',
-    rippleScale: 0.6,
-    /**
-     * @namespace
-     * @property {Element} ele
-     * @property {string} URL
-     */
-    CSS: {
-      ele: document.createElement('style'),
-      URL: moduleDir + 'Ripple.css',
-      /** @enum {string} */
-      animationNames: {
-        running: 'ripple-running',
-        ended: 'ripple-ended',
-      },
-      /** @enum {string} */
-      propertyNames: {
-        center: '--ripple-center',
-        clickPosition: '--ripple-kiss-point',
-        diameter: '--ripple-diameter',
-        scale: '--ripple-scale',
-      },
+  CSS: {
+    ele: document.createElement('style'),
+    URL: modulePath + 'Ripple.css',
+    /** @enum {string} */
+    animationNames: {
+      running: 'ripple-running',
+      ended: 'ripple-ended',
+    },
+    /** @enum {string} */
+    propertyNames: {
+      center: '--ripple-center',
+      clickPosition: '--ripple-kiss-point',
+      diameter: '--ripple-diameter',
+      scale: '--ripple-scale',
     },
   },
+};
 
+/**
+ * @property {boolean} animating
+ * @property {boolean} focusing
+ * @property {?Element} currentEle
+ */
+const state = {
+  animating: false,
+  focusing: false,
+  currentEle: null,
+};
+
+/**
+ * Containing functions which expose to environment.
+ * @enum {Function}
+ */
+const Ripple = {
   /**
-   * @property {boolean} animating
-   * @property {boolean} focusing
-   * @property {?Element} currentEle
+   * Reset some settings.
+   * @param {Object} newSettings
    */
-  state: {
-    animating: false,
-    focusing: false,
-    currentEle: null,
+  set(newSettings) {
+    objectDeepAssign(settings, newSettings);
   },
 
   /**
-   * Set up CSS and HTML.
+   * Set up CSS, HTML and a optional working space.
+   * @param {Element} lake
    */
-  load() {
+  load(lake = document.body) {
     // Append <style>.
-    const { CSS } = Ripple.settings;
+    const { CSS } = settings;
     CSS.ele.innerText = `@import url(${CSS.URL})`;
-    document.body.appendChild(CSS.ele);
+    lake.appendChild(CSS.ele);
 
-    // Bind Events.
-    document.body.addEventListener('mousedown', Ripple.start);
-    document.body.addEventListener('mouseup', Ripple.blur);
-    document.body.addEventListener('animationend', Ripple.animationEnd);
+    // Bind events.
+    lake.addEventListener('mousedown', Ripple.start);
+    lake.addEventListener('mouseup', Ripple.blur);
+    lake.addEventListener('animationend', Ripple.animationEnd);
   },
 
   /**
@@ -101,13 +137,13 @@ const Ripple = {
    * @event document~start
    */
   start({ offsetX, offsetY, target }) {
-    const { settings, state } = Ripple;
 
     // Return if it hasn't been marked.
     if (!target.hasAttribute(settings.markWord)) return;
 
     // Be ready to create a ripple.
-    if (state.currentEle) Ripple.end();
+    // Force stop if hasn't, and update state.
+    if (state.currentEle) Ripple.stop();
     state.animating = true;
     state.focusing = true;
     state.currentEle = target;
@@ -117,8 +153,8 @@ const Ripple = {
     // Most of these parts can and should be done in CSS4.
     // But at present browsers don't support many necessary math functions.
     // Default diameter is 60% of the longer one between the width and height.
-    const diameter = Math.max(width, height) * settings.rippleScale;
-    const scale = Math.hypot(width, height) / diameter;
+    const diameter = Math.max(width, height) * settings.initialScale;
+    const finalScale = Math.hypot(width, height) / diameter;
   
     // Apply to the element.
     const { propertyNames, animationNames } = settings.CSS;
@@ -126,63 +162,57 @@ const Ripple = {
       [propertyNames.center]: `${width / 2}px, ${height / 2}px`,
       [propertyNames.clickPosition]: `${offsetX}px, ${offsetY}px`,
       [propertyNames.diameter]: `${diameter}px`,
-      [propertyNames.scale]: scale,
+      [propertyNames.scale]: finalScale,
     });
     classSwitch(target, [animationNames.ended, animationNames.running]);
   },
 
   /**
-   * End the effect when mouse goes up if the animation has ended.
+   * Stop the effect when mouse goes up if the animation has ended.
    * @event document~blur
    */
   blur() {
-    const { state } = Ripple;
-
     // Return if nothing is rippling.
     if (!state.currentEle) return;
 
     state.focusing = false;
 
-    // End if not animating. Similar to the end of Ripple.animationEnd.
-    if (!state.animating) Ripple.end();
+    // Stop if not animating. Similar to the end of Ripple.animationEnd.
+    if (!state.animating) Ripple.stop();
   },
 
   /**
-   * End the effect at the end of the animation if the mouse has upped.
+   * Stop the effect at the end of the animation if the mouse has upped.
    * @param {string} animationName
    * @event document~animationEnd
    */
   animationEnd({ animationName }) {
-    const { state } = Ripple;
-
     // Return if nothing is rippling.
     if (!state.currentEle) return;
 
     // Return if the animation is not the one we want.
-    const { animationNames } = Ripple.settings.CSS;
+    const { animationNames } = settings.CSS;
     if (animationName !== animationNames.running) return;
 
     state.animating = false;
 
-    // End if not focusing. Similar to the end of Ripple.blur.
-    if (!state.focusing) Ripple.end();
+    // Stop if not focusing. Similar to the end of Ripple.blur.
+    if (!state.focusing) Ripple.stop();
   },
 
   /**
-   * End the ripple.
+   * Stop the ripple.
    */
-  end() {
-    const { currentEle } = Ripple.state;
+  stop() {
+    const { currentEle } = state;
 
     // End CSS animation.
-    const { animationNames } = Ripple.settings.CSS;
+    const { animationNames } = settings.CSS;
     classSwitch(currentEle, [animationNames.running, animationNames.ended]);
 
     // Restore the state.
-    Ripple.state.currentEle = null;
+    state.currentEle = null;
   },
 };
-
-Ripple.load();
 
 export default Ripple;

@@ -2,7 +2,7 @@
  * Touch with a ripple.
  * 
  * @module  RippleTouch/Ripple
- * @version 6.1471-20190615
+ * @version 6.1472-20190618
  * @license Apache-2.0
  */
 
@@ -118,10 +118,12 @@ const Ripple = {
    * @param {Element} lake
    */
   load(lake = document.body) {
-    // Append <style>.
+    // Append <style> if haven't.
     const { CSS } = settings;
-    CSS.ele.innerText = `@import url(${CSS.URL})`;
-    lake.appendChild(CSS.ele);
+    if (!CSS.ele.isConnected) {
+      CSS.ele.innerText = `@import url(${CSS.URL})`;
+      document.body.appendChild(CSS.ele);
+    }
 
     // Bind events.
     lake.addEventListener('mousedown', Ripple.start);
@@ -134,7 +136,6 @@ const Ripple = {
    * @param {number} offsetX
    * @param {number} offsetY
    * @param {Element} target
-   * @event document~start
    */
   start({ offsetX, offsetY, target }) {
 
@@ -169,7 +170,6 @@ const Ripple = {
 
   /**
    * Stop the effect when mouse goes up if the animation has ended.
-   * @event document~blur
    */
   blur() {
     // Return if nothing is rippling.
@@ -184,7 +184,6 @@ const Ripple = {
   /**
    * Stop the effect at the end of the animation if the mouse has upped.
    * @param {string} animationName
-   * @event document~animationEnd
    */
   animationEnd({ animationName }) {
     // Return if nothing is rippling.

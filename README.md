@@ -6,14 +6,14 @@
 
 ![Latest Tag](https://img.shields.io/github/tag-date/PaperFlu/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperFlu/RippleTouch.svg)
 
-Ripple, ripple, ripple. A ready-to-use, no-cofiguration needed web component for modern browsers. **7.59kb** (v6.1471, unzipped) in total, JSDoc written, it's **fast** and **elegant**. That's it.
+Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **7.57kb** (v6.1473, unzipped) in total, JSDoc written, it's **fast** and **elegant**. That's it.
 
 ### Index 😃
 
 - [Example](#example)
 - [Usage](#usage)
 - [Configuration](#configuration)
-- [Limitations](#limitations)
+- [Notes](#notes)
 - [Support](#support)
 - [License](#license)
 
@@ -59,7 +59,7 @@ import Ripple from './RippleTouch/Ripple.js';
 Ripple.load();
 ```
 
-or use a function-like dynamic `import()` like the [Demo](#example) does. It's **Recommended**. `type="module"` is needless there. Done. 😉
+or use a function-like dynamic `import()` like the [example](#example) does. It's [**recommended**](#use-dynamic-import). `type="module"` is needless there. Done. 😉
 
 ## Configuration
 
@@ -67,27 +67,20 @@ Unnecessary but well-tested adjustments.
 
 ### Limit Scope
 
-Post an element to `Ripple.load` after import:
+Post an element to `Ripple.load` after the module is imported:
 
 ```javascript
 const lake = document.getElementById('lake');
 Ripple.load(lake);
 ```
 
-Elements outside `lake` will have **no ripple effects** even if it has a `[Ripple]` attribute. RippleTouch uses event listeners to set up effects, and the listeners will be added to the element specified. If **no** element been posted, it binds to `document.body`.
+Elements outside `lake` will have **no ripple effects** even if it has a `[Ripple]` attribute. RippleTouch uses event listeners to set up effects, and the listeners will be added to the element specified. If **no** element been posted, `document.body` will take its place.
 
-Limiting scope may improve performance because outside it will not examine whether the element user interacted has `[Ripple]` or not anymore. ~~You can use `Ripple.load` many times to extend scope for different parts of your site. But usually, a single execution without parameter is totally enough.~~ Multiple load may cause duplicate HTML and CSS code in current version.
+Limiting scope may improve performance because outside it will not examine whether the element user interacted has `[Ripple]` or not anymore. You can use `Ripple.load` many times to extend scope for different parts of your page. But usually, a single execution without parameter is totally enough.
 
 ### Others
 
-
-When the animation begins, the diameter of ripple is 60% of the longer between the width and height in default. Change it by using `Ripple.set`. If I want it smaller:
-
-```javascript
-Ripple.set({initialScale: 0.3});
-```
-
-If you want to separate JS and CSS file, post a URL of Ripple.css before load. All settings which can be changed by `Ripple.set` and their default values are listed here:
+Everything may be changed by `Ripple.set` and their default values are listed here:
 
 ```javascript
 settings = {
@@ -112,15 +105,41 @@ settings = {
 };
 ```
 
-## Limitations
+##### Introduction
 
-1. If you use static `import` statement to import modules, you will be **UNABLE** to access them outside the \<script\> marked `type="module"`. So, in my *personal* views, ++use dynamic import++ **always** if there is no need to consider such a small browser compatibility difference. (For example, Chrome leaves 61-63 and Firefox takes 60-67 away, according to [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Browser_compatibility).)
+-   At the **beginning** of the animation, the diameter of ripple is **60% of the longer** between the width and height in default. If I want it smaller:
+    ```javascript
+    Ripple.set({ initialScale: 0.3 });
+    ```
 
-2. Haven't been well-adjusted for mobile devices. It can only make ++**one** ripple at a same time++. Use two fingers touch at the two blocks in the [demo][Demo], you will see it.
+-   If you want to separate the JS and CSS file, post the URL of Ripple.css **before load**, otherwise the **CSS will be load from the same folder** where you import the JS file automatically while loading. The URL may be absolute or relative. Relative one is relative to the URL of the web page.
+    ```javascript
+    // If current web page locates in 'https://example.com/index.html'
+    // CSS will be imported from 'https://example.com/CSS/Ripple.css'
+    Ripple.set({ CSS: { URL: './CSS/Ripple.css' } });
+    ```
+
+## Notes
+
+Suggestions and imperfections in the latest release.
+
+### Use dynamic import
+
+If you use static `import` statement to import modules, you will be **UNABLE** to access them outside the \<script\> marked `type="module"`. So, in my *personal* views, use dynamic import always if there is no need to consider such a small browser compatibility difference. (For example, Chrome leaves 61-63 and Firefox leaves 60-67 away, according to [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Browser_compatibility).)
+
+Ignore it if you use tools like [Babel](https://babeljs.io).
+
+### One ripple at a same time
+
+Haven't been well-adjusted for mobile devices.
+
+- Events will be delayed about 300ms if users have options like "`force enable zoom`" enabled in browsers, which makes the web page being felt laggy.
+
+- It can only make **one** ripple at a same time. Use two fingers touch at the two blocks in the [demo][Demo], you will get it. There isn't a plan to fix it for now.
 
 ## Support
 
-Issues will be opened soon. 😉
+Issues will be opened soon. 😛
 
 ## License
 

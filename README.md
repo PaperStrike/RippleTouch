@@ -6,7 +6,7 @@
 
 ![Latest Tag](https://img.shields.io/github/tag-date/PaperFlu/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperFlu/RippleTouch.svg)
 
-Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **7.09kb** (v7.1478, unzipped) in total, JSDoc written, it's **fast** and **elegant**. That's it.
+Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **6.42kb** (v7.1479, unzipped) in total, JSDoc written, it's **fast** and **elegant**. That's it.
 
 ### Index 😃
 

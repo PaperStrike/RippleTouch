@@ -2,30 +2,9 @@
  * Touch with a ripple.
  * 
  * @module  RippleTouch/Ripple
- * @version 7.1478-20190628
+ * @version 7.1479-20190629
  * @license Apache-2.0
  */
-
-/**
- * Overwrite properties in the target by properties in the source.
- * @param {Object} target - object to be updated.
- * @param {Object} source - like a patch.
- */
-const objectDeepAssign = (target, source) => {
-  Object.keys(source).forEach((sourcePropName) => {
-    let targetProp, sourceProp;
-    targetProp = target[sourcePropName];
-    sourceProp = source[sourcePropName];
-
-    // TODO: Make condition looks better.
-    if(typeof targetProp + typeof sourceProp === 'object'.repeat(2)) {
-      objectDeepAssign(targetProp, sourceProp);
-    }
-    else {
-      target[sourcePropName] = sourceProp;
-    }
-  });
-};
 
 /**
  * Set multiple property in once.
@@ -41,7 +20,7 @@ const setStyleProperties = (ele, properties) => {
 
 /**
  * Can be reset by using Ripple.set.
- * @property {Number} initialScale - initial size of diameter.
+ * @property {Number} initialScale
  */
 const settings = {
   initialScale: 0.6,
@@ -75,7 +54,7 @@ const Ripple = {
    * @param {Object} newSettings
    */
   set(newSettings) {
-    objectDeepAssign(settings, newSettings);
+    Object.assign(settings, newSettings);
   },
 
   /**
@@ -109,9 +88,10 @@ const Ripple = {
     // Return if it hasn't been marked.
     if (!target.hasAttribute(Ripple.markWord)) return;
 
-    // Be ready to create a ripple.
-    // Force stop if hasn't, then update state.
+    // Force stop if hasn't.
     if (state.currentEle) Ripple.stop();
+
+    // Update state.
     state.animating = true;
     state.focusing = true;
     state.currentEle = target;

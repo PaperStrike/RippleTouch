@@ -1,0 +1,19 @@
+{
+  "name": "rippletouch",
+  "version": "7.1479.1",
+  "description" : "Touch with a ripple on modern browsers",
+  "homepage": "https://github.com/PaperFlu/RippleTouch#readme",
+  "devDependencies": {
+    "minify": "^4.1.1"
+  },
+  "keywords": [
+    "ripple",
+    "animation",
+    "es6",
+    "click"
+  ],
+  "main" : "./lib/Ripple.js",
+  "readmeFilename": "README.md",
+  "repository": "github:PaperFlu/RippleTouch",
+  "license": "Apache-2.0"
+}

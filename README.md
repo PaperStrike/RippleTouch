@@ -33,7 +33,7 @@ and script (dynamic import):
 
 ```javascript
 let Ripple;
-import('./Modules/Ripple.js')
+import('./lib/Ripple.js')
   .then((module) => {
     Ripple = module.default;
     Ripple.load();
@@ -42,7 +42,7 @@ import('./Modules/Ripple.js')
 
 ## Usage
 
-Preparation: [Click here to download](https://github.com/PaperFlu/RippleTouch/releases/latest/download/RippleTouch.zip) the latest **RippleTouch.zip** asset directly, or go to [the release page](https://github.com/PaperFlu/RippleTouch/releases) to choose another version of it.
+Preparation: [Click here to download](https://github.com/PaperFlu/RippleTouch/releases/latest/download/RippleTouch.zip) the latest **Ripple.zip** asset directly, or go to [the release page](https://github.com/PaperFlu/RippleTouch/releases) to choose another version of it.
 
 ### Install
 
@@ -51,15 +51,15 @@ First, extract **Ripple.js** to wherever you want.
 Second, add attribute `[Ripple]` to select the elements which has the effect. Example:
 
 ```html
-<button Ripple>Boom Shakalaka</button>
+<button Ripple>Boom</button>
 ```
 
-Finally, import it from where you extracted it and call `Ripple.load`. The module will import CSS to `document.body` automatically when call the load. For standard import method using static `import` statement, **remember** to give the \<script\> a `type="module"`, otherwise the `import` statement will be unusable.
+Finally, import it from where you extracted it and call `Ripple.load`. For standard import method using static `import` statement, **remember** to give the \<script\> a `type="module"`, otherwise the `import` statement will be unusable.
 
 ```javascript
 // <scrip src="example.js" type="module"></script> in example.html
 // Below is example.js
-import Ripple from './Modules/Ripple.js';
+import Ripple from './lib/Ripple.js';
 Ripple.load();
 ```
 
@@ -73,7 +73,7 @@ Update from **v6** or below? Delete **Ripple.css** as it has been integrated wit
 
 ## Configuration
 
-Unnecessary but well-tested adjustments.
+Unnecessary but well-tested adjustments in the latest release.
 
 ### Limit Scope
 
@@ -89,7 +89,7 @@ Elements outside `earth` will have **no ripple effects** even if it has a `[Ripp
 
 Limiting scope may improve performance because outside it will not examine whether the element user interacted has `[Ripple]` or not anymore. You can use `Ripple.load` many times to extend scope for different parts of your page. But usually, a single execution without parameter is totally enough.
 
-### Avoid variable conflicts
+### Avoid Variable Conflicts
 
 `[Ripple]` identity can be changed. If other HTML or CSS use the same word, change it **before the first run of `Ripple.load`** may avoid unexpected behavior. Example here:
 
@@ -102,6 +102,12 @@ Ripple.load();
 const buttons = document.getElementsByTagName('button');
 buttons.forEach((ele) => ele.setAttribute(Ripple.markWord, ''));
 // ...
+```
+
+Then buttons will be like:
+
+```html
+<button Ripple3663492410>Shakalaka</button>
 ```
 
 ### Others

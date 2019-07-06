@@ -2,7 +2,7 @@
 
 # RippleTouch
 
-> Touch with a ripple | ES6 module
+> Touch with a ripple especially for ES6 supported browsers.
 
 ![Latest Tag](https://img.shields.io/github/tag-date/PaperFlu/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperFlu/RippleTouch.svg)
 
@@ -168,6 +168,6 @@ Issues will be opened soon. 😛
 
 ## License
 
-[Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+RippleTouch is [MIT licensed](https://github.com/PaperFlu/RippleTouch/blob/master/LICENSE).
 
 [Demo]: https://paperflu.github.io/RippleTouch

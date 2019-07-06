@@ -76,7 +76,7 @@ module.exports = {
   },
 
   save(type, withInfo = false) {
-  	  switch (type) {
+    switch(type) {
       case 'js':
         if (withInfo) {
           minifiedJS = jsInfo + minifiedJS + "\n";

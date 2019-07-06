@@ -1,9 +1,9 @@
 /**
- * 6.29
+ * 7.06
  */
 
 let Ripple;
-import('./lib/Ripple.js')
+import('./Ripple.min.js')
   .then((module) => {
     Ripple = module.default;
     Ripple.load();

@@ -17,8 +17,16 @@
     color: #fff;
   }
 
-  h1 {
+  header {
+    margin: 16px 0 24px;
     font-size: 36px;
+    font-weight: 700;
+  }
+
+  main::after {
+    content: "";
+    display: block;
+    clear: both;
   }
 
   .ripples {
@@ -33,20 +41,33 @@
 
     -moz-user-select: none;
   }
+
+  footer {
+    margin: 16px 6px;
+    font-size:14px;
+    color: #ddd;
+  }
   </style>
 
 </head><body>
 
-  <h1>Hello, I'm a demo!</h1>
+  <header>Hello, I'm a demo!</header>
  
-  <div class="ripples" style="background: #03dac5;" Ripple>
-    Ripples?
-  </div>
+  <main>
+    <div class="ripples" style="background: #03dac5;" Ripple>
+      Ripples?
+    </div>
 
-  <div class="ripples" style="background: #ef4fa6;margin-left: 24px;" Ripple>
-    Ripples!
-  </div>
+    <div class="ripples" style="background: #ef4fa6;margin-left: 24px;" Ripple>
+      Ripples!
+    </div>
+  </main>
+
+  <footer>ver: 7.1479.5</footer>
 
   <script src="index.js"></script>
+
+  <script src="eruda.min.js"></script>
+  <script>eruda.init();</script>
 
 </body></html>

@@ -2,11 +2,11 @@
 
 # RippleTouch
 
-> Touch with a ripple | ES6 Module
+> Touch with a ripple | ES6 module
 
 ![Latest Tag](https://img.shields.io/github/tag-date/PaperFlu/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperFlu/RippleTouch.svg)
 
-Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **6.42kb** (v7.1479, unzipped) in total, JSDoc written, it's **fast** and **elegant**. That's it.
+Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **3.16kb** (v7.1479.5, minified) in total, JSDoc written, it's **fast** and **elegant**. That's it.
 
 ### Index 😃
 
@@ -33,7 +33,7 @@ and script (dynamic import):
 
 ```javascript
 let Ripple;
-import('./lib/Ripple.js')
+import('./lib/Ripple.min.js')
   .then((module) => {
     Ripple = module.default;
     Ripple.load();
@@ -46,7 +46,7 @@ Preparation: [Click here to download](https://github.com/PaperFlu/RippleTouch/re
 
 ### Install
 
-First, extract **Ripple.js** to wherever you want.
+First, extract **Ripple.min.js** to wherever you want.
 
 Second, add attribute `[Ripple]` to select the elements which has the effect. Example:
 
@@ -59,7 +59,7 @@ Finally, import it from where you extracted it and call `Ripple.load`. For stand
 ```javascript
 // <scrip src="example.js" type="module"></script> in example.html
 // Below is example.js
-import Ripple from './lib/Ripple.js';
+import Ripple from './lib/Ripple.min.js';
 Ripple.load();
 ```
 
@@ -67,9 +67,11 @@ or use a function-like dynamic `import()` like the [example](#example) does. It'
 
 ### Update
 
-Extract the latest achieve to where you stored **Ripple.js** and overwrite it. In most cases, it's done.
+Extract the latest achieve to where you stored **Ripple.min.js** and overwrite it. In most cases, it's done.
 
-Update from **v6** or below? Delete **Ripple.css** as it has been integrated with the script since **v7**.
+##### From v7.1492.1 or older:
+
+Check files whose name starts with **Ripple** to delete obsolete one. From v7.1492.2, there should only be one file, **Ripple.min.js** or **Ripple.js**, in your project folder.
 
 ## Configuration
 

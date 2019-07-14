@@ -17,14 +17,13 @@ let minifiedCSS;
   // Contents of '${}' in tempCSS.
   let words;
   {
-    words = tempCSS.match(/\${.*?}/g);
+    words = tempCSS.match(/(?<=\$\{)[^}]*(?=\})/g);
 
     // Remove duplicate items, prefix and suffix.
     words = words.sort().reduce((accumulator, current) => {
       const length = accumulator.length;
-      const slicedCurrent = current.slice(2, -1);
-      if (length === 0 || accumulator[length - 1] !== slicedCurrent) {
-        accumulator.push(slicedCurrent);
+      if (length === 0 || accumulator[length - 1] !== current) {
+        accumulator.push(current);
       }
       return accumulator;
     }, []);
@@ -81,13 +80,13 @@ module.exports = {
         if (withInfo) {
           minifiedJS = jsInfo + minifiedJS + "\n";
         };
-        fs.writeFile('./lib/Ripple.min.js', minifiedJS, 'utf8', (err) => {
+        fs.writeFile(`${__dirname}/lib/Ripple.min.js`, minifiedJS, 'utf8', (err) => {
           if (err) throw err;
           console.log('Minified JS file with minified CSS has been saved!');
         });
         break;
       case 'css':
-        fs.writeFile('./lib/.Ripple.min.css', minifiedCSS, 'utf8', (err) => {
+        fs.writeFile(`${__dirname}/lib/Ripple.min.css`, minifiedCSS, 'utf8', (err) => {
           if (err) throw err;
           console.log('Minified CSS has been saved!');
         });

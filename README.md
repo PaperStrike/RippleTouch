@@ -6,7 +6,7 @@
 
 ![Latest Tag](https://img.shields.io/github/tag-date/PaperFlu/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperFlu/RippleTouch.svg)
 
-Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **3.16kb** (v7.1479.5, minified) in total, JSDoc written, it's **fast** and **elegant**. That's it.
+Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **3.83kb** (v8.1488.3, minified) in total, JSDoc written, it's **fast** and **elegant**. That's it.
 
 ### Index 😃
 
@@ -33,7 +33,7 @@ and script (dynamic import):
 
 ```javascript
 let Ripple;
-import('./lib/Ripple.min.js')
+import('./Ripple.min.js')
   .then((module) => {
     Ripple = module.default;
     Ripple.load();
@@ -69,9 +69,13 @@ or use a function-like dynamic `import()` like the [example](#example) does. It'
 
 Extract the latest achieve to where you stored **Ripple.min.js** and overwrite it. In most cases, it's done.
 
-##### From v7.1492.1 or older:
+#### From v8.1482.0 or older:
 
-Check files whose name starts with **Ripple** to delete obsolete one. From v7.1492.2, there should only be one file, **Ripple.min.js** or **Ripple.js**, in your project folder.
+Pay attention to `Ripple.markWord`. It's called `Ripple.mark` now.
+
+#### From v7.1479.1 or older:
+
+Check files whose name starts with **Ripple** to delete obsolete one. From v7.1479.2, there should only be one file, **Ripple.min.js** or **Ripple.js**, in your project folder.
 
 ## Configuration
 
@@ -97,12 +101,12 @@ Limiting scope may improve performance because outside it will not examine wheth
 
 ```javascript
 // ... (Imported Ripple object but executed Ripple.load)
-Ripple.markWord += Math.floor(Math.random() * 10 ** 10).toString();
+Ripple.mark += Math.floor(Math.random() * 10 ** 10).toString();
 Ripple.load();
 
 // Turn some elements to a lake.
 const buttons = document.getElementsByTagName('button');
-buttons.forEach((ele) => ele.setAttribute(Ripple.markWord, ''));
+buttons.forEach((ele) => ele.setAttribute(Ripple.mark, ''));
 // ...
 ```
 
@@ -112,13 +116,15 @@ Then buttons will be like:
 <button Ripple3663492410>Shakalaka</button>
 ```
 
-### Others
+### Style Properties
 
-These (currently only one) can be changed by `Ripple.set` **at anytime**:
+These css custom properties can be changed by `Ripple.set` **at anytime**:
 
 ```javascript
-settings = {
+styleProperties = {
   initialScale: 0.6,
+  runningDuration: '300ms',
+  opacityDuration: '83ms',
 };
 ```
 
@@ -126,6 +132,10 @@ settings = {
     ```javascript
     Ripple.set({ initialScale: 0.3 });
     ```
+
+-   Ripples will **enlarge for 300ms** until it filled up the element in default. Defined by `runningDuration`.
+
+-   All **opacity changes last for 83ms** in default. Defined by `opacityDuration`.
 
 ## Notes
 
@@ -137,30 +147,30 @@ If you use static `import` statement to import modules, you will be **UNABLE** t
 
 Ignore it if you use tools like [Babel](https://babeljs.io).
 
-### Only change Ripple.markWord before load
+### Determine the mark before load
 
-Stylesheets will be generated and appended to `document.body` with `Ripple.markWord` at the first execution of `Ripple.load`.
+Stylesheets will be generated and appended to `document.body` with `Ripple.mark` at the first execution of `Ripple.load`.
 
-Changing the word afterwards seems meaningless. So the markWord is **forced unwritable** once `Ripple.load` executed.
+Changing the word afterwards seems meaningless. So the mark is **forced unwritable** once `Ripple.load` has executed.
 
 ```javascript
-Ripple.markWord = 'Ripple1683247813';
+Ripple.mark = 'Ripple1683247813';
 Ripple.load();
 
 // Will not change.
 // At strict mode, throws a TypeError:
-// "markWord" is read-only.
+// "mark" is read-only.
 // And will not change, either.
-Ripple.markWord = 'Ripple2347119623';
+Ripple.mark = 'Ripple2347119623';
 ```
 
-### One ripple at a same time
+### One ripple at the same time
 
 Haven't been well-adjusted for mobile devices.
 
-- Events will be delayed about 300ms if users have options like "`force enable zoom`" enabled in browsers, which makes the web page being felt laggy.
+- Events will be delayed about 300ms if users have options like "`force enable zoom`" enabled in [browsers that doesn't support pointer events](https://caniuse.com/#feat=pointer), which makes the web page being felt laggy.
 
-- It can only make **one** ripple at a same time. Use two fingers touch at the two blocks in the [demo][Demo], you will get it. There isn't a plan to fix it for now.
+- It can only make **one** ripple at the same time. Use two fingers touch at the two blocks in the [demo][Demo], you will get it. There isn't a plan to fix it for now.
 
 ## Support
 

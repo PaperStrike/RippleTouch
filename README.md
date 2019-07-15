@@ -134,7 +134,7 @@ styleProperties = {
     Ripple.set({ initialScale: 0.3 });
     ```
 
--   Ripples' background color is **rgba(0, 0, 0, 0.06)** in default. May adds white mode in the future. Defined by `backgroundColor`. The **same method** as `initialScale` to change it.
+-   Ripples' background color is **rgba(0, 0, 0, 0.06)** in default. Defined by `backgroundColor`. The **same method** as `initialScale` to change it.
 
 -   Ripples will **enlarge for 300ms** until it filled up the element in default. Defined by `runningDuration`.
 

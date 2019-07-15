@@ -6,7 +6,7 @@
 
 ![Latest Tag](https://img.shields.io/github/tag-date/PaperFlu/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperFlu/RippleTouch.svg)
 
-Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **3.83kb** (v8.1488.3, minified) in total, JSDoc written, it's **fast** and **elegant**. That's it.
+Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **3.85kb** (v8.1490.1, minified) in total, wrote with JSDoc syntax, it's **fast** and **elegant**. That's it.
 
 ### Index 😃
 
@@ -123,6 +123,7 @@ These css custom properties can be changed by `Ripple.set` **at anytime**:
 ```javascript
 styleProperties = {
   initialScale: 0.6,
+  backgroundColor: 'rgba(0,0,0,.06)',
   runningDuration: '300ms',
   opacityDuration: '83ms',
 };
@@ -132,6 +133,8 @@ styleProperties = {
     ```javascript
     Ripple.set({ initialScale: 0.3 });
     ```
+
+-   Ripples' background color is **rgba(0, 0, 0, 0.06)** in default. May adds white mode in the future. Defined by `backgroundColor`. The **same method** as `initialScale` to change it.
 
 -   Ripples will **enlarge for 300ms** until it filled up the element in default. Defined by `runningDuration`.
 

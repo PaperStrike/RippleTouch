@@ -1,0 +1,103 @@
+/**
+ * @version: 5.1338-20190715
+ */
+[${mark}] {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  
+  -webkit-tap-highlight-color: transparent;
+}
+
+[${mark}] > * {
+  pointer-events: none;
+}
+
+[${mark}]::before,
+[${mark}]::after {
+  position: absolute;
+  background: var(${propName('backgroundColor')});
+  opacity: 0;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+  content: '';
+}
+
+[${mark}]::before {
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+}
+
+[${mark}]::after {
+  ${propName('rippleDiameter')}: calc(var(${propName('longerSideLength')}) * var(${propName('initialScale')}));
+  ${propName('scale')}: calc(var(${propName('eleDiameterToLongerSideLength')}) / var(${propName('initialScale')}));
+  top: calc(var(${propName('rippleDiameter')}) / -2);
+  left: calc(var(${propName('rippleDiameter')}) / -2);
+  width: var(${propName('rippleDiameter')});
+  height: var(${propName('rippleDiameter')});
+  transform: translate(var(${propName('center')}, 0));
+  transform-origin: center center;
+  border-radius: 50%;
+}
+
+[${mark}]:hover::before,
+[${mark}]:hover::after {
+  will-change: opacity, transform;
+}
+
+[${mark}].${animName('running')}::before {
+  opacity: 1;
+  animation-name: ${animName('opacityIn')};
+  animation-duration: var(${propName('opacityDuration')});
+}
+
+[${mark}].${animName('running')}::after {
+  opacity: 1;
+  animation-name: ${animName('running')}, ${animName('opacityIn')};
+  animation-duration: var(${propName('runningDuration')}), var(${propName('opacityDuration')});
+}
+
+[${mark}].${animName('ended')}::before,
+[${mark}].${animName('ended')}::after {
+  animation-name: ${animName('opacityOut')};
+  animation-duration: var(${propName('opacityDuration')});
+}
+
+[${mark}].${animName('ended')}::after {
+  transform: translate(var(${propName('center')}, 0)) scale(var(${propName('scale')}));
+}
+
+@keyframes ${animName('running')} {
+  from {
+    transform: translate(var(${propName('kissPoint')}, 0)) scale(1);
+    animation-timing-function: cubic-bezier(.4, 0, .2, 1);
+  }
+
+  to {
+    transform: translate(var(${propName('center')}, 0)) scale(var(${propName('scale')}));
+  }
+}
+
+@keyframes ${animName('opacityIn')} {
+  from {
+    opacity: 0;
+    animation-timing-function: linear;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ${animName('opacityOut')} {
+  from {
+    opacity: 1;
+    animation-timing-function: linear;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

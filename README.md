@@ -6,7 +6,7 @@
 
 ![Latest Tag](https://img.shields.io/github/tag-date/PaperFlu/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperFlu/RippleTouch.svg)
 
-Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **3.85kb** (v8.1490.1, minified) in total, wrote with JSDoc syntax, it's **fast** and **elegant**. That's it.
+Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **3.89kb** (v8.1491.0, minified) in total, followed up with JSDoc syntax, it's **fast** and **elegant**. That's it.
 
 ### Index 😃
 
@@ -170,8 +170,6 @@ Ripple.mark = 'Ripple2347119623';
 ### One ripple at the same time
 
 Haven't been well-adjusted for mobile devices.
-
-- Events will be delayed about 300ms if users have options like "`force enable zoom`" enabled in [browsers that doesn't support pointer events](https://caniuse.com/#feat=pointer), which makes the web page being felt laggy.
 
 - It can only make **one** ripple at the same time. Use two fingers touch at the two blocks in the [demo][Demo], you will get it. There isn't a plan to fix it for now.
 

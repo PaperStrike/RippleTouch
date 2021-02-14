@@ -4,7 +4,7 @@
 
 > Touch with a ripple especially for ES6 supported browsers.
 
-![Latest Tag](https://img.shields.io/github/tag-date/PaperFlu/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperFlu/RippleTouch.svg)
+![Latest Tag](https://img.shields.io/github/tag-date/PaperStrike/RippleTouch.svg) ![License](https://img.shields.io/github/license/PaperStrike/RippleTouch.svg)
 
 Ripple, ripple, ripple. A ready-to-use, no cofiguration needed web component for modern browsers. **3.89kb** (v8.1491.0, minified) in total, followed up with JSDoc syntax, it's **fast** and **elegant**. That's it.
 
@@ -42,7 +42,7 @@ import('./Ripple.min.js')
 
 ## Usage
 
-Preparation: [Click here to download](https://github.com/PaperFlu/RippleTouch/releases/latest/download/RippleTouch.zip) the latest **Ripple.zip** asset directly, or go to [the release page](https://github.com/PaperFlu/RippleTouch/releases) to choose another version of it.
+Preparation: [Click here to download](https://github.com/PaperStrike/RippleTouch/releases/latest/download/RippleTouch.zip) the latest **Ripple.zip** asset directly, or go to [the release page](https://github.com/PaperStrike/RippleTouch/releases) to choose another version of it.
 
 ### Install
 
@@ -179,6 +179,6 @@ Issues will be opened soon. 😛
 
 ## License
 
-RippleTouch is [MIT licensed](https://github.com/PaperFlu/RippleTouch/blob/master/LICENSE).
+RippleTouch is [MIT licensed](https://github.com/PaperStrike/RippleTouch/blob/master/LICENSE).
 
-[Demo]: https://paperflu.github.io/RippleTouch
+[Demo]: https://paperstrike.github.io/RippleTouch
